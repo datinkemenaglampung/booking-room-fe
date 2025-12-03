@@ -81,14 +81,14 @@ const EventCard = ({ event }) => {
 
       <div className="w-100 d-flex justify-content-start gap-1 align-items-center my-1">
         <span
-          className={`badge rounded-pill px-2 color-white ${bookingStatusBgColor[event.status]}`}
-          style={{ fontSize: "0.5rem", alignSelf: "flex-start", color: "white" }}>
-          {event.status}
-        </span>
-        <span
           className={`badge rounded-pill px-2 color-white `}
           style={{ fontSize: "0.5rem", alignSelf: "flex-start", color: "white", backgroundColor: backgroundColor }}>
           {event.room_name}
+        </span>
+        <span
+          className={`badge rounded-pill px-2 color-white ${bookingStatusBgColor[event.status]}`}
+          style={{ fontSize: "0.5rem", alignSelf: "flex-start", color: "white" }}>
+          {event.status}
         </span>
       </div>
     </div>
@@ -149,29 +149,29 @@ const EventAgenda = ({ event, cancelBooking, approveBooking, rejectBooking, setF
   };
 
   return (
-    <div className="w-100 d-flex flex-row justifu-content-between align-items-center">
-      <UserAvatar size="md" className="me-2" imageUrl={`${event.room_image}`} />
+    <div className="w-100 d-flex flex-row justifu-content-between align-items-center my-1 py-2">
+      <UserAvatar size="xl" className="me-2" imageUrl={`${event.room_image}`} />
       <div className="d-flex flex-column justifu-content-between">
         <span
           className="fw-bold"
-          style={{ fontSize: "0.9rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          style={{ fontSize: "1.3rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
           {event.title}
         </span>
         <div className="w-100 d-flex justify-content-start gap-1 align-items-center my-1">
           <span
-            className={`badge rounded-pill px-2 color-white ${bookingStatusBgColor[event.status]}`}
-            style={{ fontSize: "0.6rem", alignSelf: "flex-start", color: "white" }}>
-            {event.status}
+            className={`badge rounded-pill px-2 color-white `}
+            style={{ fontSize: "0.8rem", alignSelf: "flex-start", color: "white", backgroundColor: backgroundColor }}>
+            {event.room_name}
           </span>
           <span
-            className={`badge rounded-pill px-2 color-white `}
-            style={{ fontSize: "0.6rem", alignSelf: "flex-start", color: "white", backgroundColor: backgroundColor }}>
-            {event.room_name}
+            className={`badge rounded-pill px-2 color-white ${bookingStatusBgColor[event.status]}`}
+            style={{ fontSize: "0.8rem", alignSelf: "flex-start", color: "white" }}>
+            {event.status}
           </span>
 
           <span
             className={`badge rounded-pill px-2 bg-white text-dark border border-dark`}
-            style={{ fontSize: "0.6rem", alignSelf: "flex-start", color: "white" }}>
+            style={{ fontSize: "0.8rem", alignSelf: "flex-start", color: "white" }}>
             {event.work_unit_name + " • " + event.user_name}
           </span>
         </div>
@@ -187,6 +187,7 @@ const EventAgenda = ({ event, cancelBooking, approveBooking, rejectBooking, setF
                   textDecoration: "underline ",
                   textDecorationColor: "green",
                 }}>
+                {event?.status === "approved" ? "Disetujui" : event?.status === "rejected" ? "Ditolak" : ""} pada{" "}
                 {event?.approved_at
                   ? "• " + event?.approved_at
                     ? format(new Date(event.approved_at), "EEEE, d MMMM yyyy HH:mm", { locale: id })

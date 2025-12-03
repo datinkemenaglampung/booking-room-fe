@@ -513,7 +513,7 @@ const LandingPage = (props) => {
             {/* Welcome Section */}
             <div className="row row-cards mt-1">
               <div className="col-12">
-                <div className="card">
+                <div className="card mx-sm-0 mx-3">
                   <div className="card-header">
                     <h3 className="card-title text-center">Selamat Datang di Sistem Peminjaman/Booking Aula</h3>
                   </div>
@@ -554,7 +554,7 @@ const LandingPage = (props) => {
               {/* Room Card 1 */}
               {rooms?.map((room) => (
                 <div className="col-md-4 mb-4">
-                  <div className="card h-100 shadow-sm">
+                  <div className="card h-100 shadow-sm mx-sm-0 mx-3">
                     <img
                       src={BASE_URL_STORAGE + room?.images?.find((image) => image?.is_main)?.image_path}
                       className="card-img-top"

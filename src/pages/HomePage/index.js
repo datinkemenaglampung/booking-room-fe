@@ -1,6 +1,5 @@
 import Swal from "sweetalert2";
 import Chart from "react-apexcharts";
-
 import React, { useState, useEffect, useMemo } from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay, add } from "date-fns";
@@ -111,6 +110,7 @@ const HomePage = (props) => {
       return null;
     }
   }, []);
+
   const permissions = userProfile?.permissions;
   const [view, setView] = useState("month"); // state untuk kontrol view
   const [date, setDate] = useState(new Date());
@@ -329,11 +329,12 @@ const HomePage = (props) => {
   const totalRooms = rooms.length;
   const totalWorkUnits = workUnits.length;
   const totalAccounts = accounts.length;
+
   useEffect(() => {
     fetchBookings();
     fetchRooms();
     fetchWorkUnits();
-    fetchAccounts();
+    fetchAccounts(500);
     getBookingsByMonthUnit(format(date, "yyyy-MM-dd"));
     getBookingsByRoom(format(date, "yyyy-MM-dd"));
   }, []);

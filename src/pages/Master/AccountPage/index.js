@@ -30,7 +30,7 @@ const AccountPage = (props) => {
     workUnits,
   } = props;
 
-  const [perPage, setPerPage] = useState(100);
+  const [perPage, setPerPage] = useState(250);
   const [currentPage, setCurrentPage] = useState(1);
   const handlePerPageChange = (value) => {
     setPerPage(value);

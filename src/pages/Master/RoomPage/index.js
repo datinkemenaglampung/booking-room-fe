@@ -10,7 +10,7 @@ import {
 import { fetchAccounts } from "../../../actions/accountAction";
 import { fetchPermissions } from "../../../actions/permissionAction";
 import { connect } from "react-redux";
-// import ModalDelete from "../../../components/Modals/ModalDelete";
+import ModalDelete from "../../../components/Modals/ModalDelete";
 import FormRoom from "./FormRoom";
 import UserAvatar from "../../../components/UserAvatar";
 // import FormPermissionPicker from "./FormPermissionPicker";
@@ -62,6 +62,7 @@ const RoomPage = (props) => {
   const openModal = () => {
     setFormState(initialState);
     setIsShowModal(true);
+    setIsEdit(false);
   };
   const closeModal = () => {
     setFormState(initialState);
@@ -132,7 +133,7 @@ const RoomPage = (props) => {
   };
 
   useEffect(() => {
-    fetchAccounts();
+    fetchAccounts(500);
     fetchRooms(perPage, currentPage);
   }, [perPage, currentPage]);
   useEffect(() => {
@@ -392,7 +393,7 @@ const RoomPage = (props) => {
                                         </svg>{" "}
                                         Edit{" "}
                                       </a>
-                                      {/* <a
+                                      <a
                                         href="#"
                                         class="btn btn-1 bg-danger-lt"
                                         data-bs-toggle="modal"
@@ -402,11 +403,9 @@ const RoomPage = (props) => {
                                           setFormState({
                                             id: room?.id,
                                             name: room?.name,
-                                            permissions:
-                                              room?.permissions || [],
+                                            permissions: room?.permissions || [],
                                           });
-                                        }}
-                                      >
+                                        }}>
                                         <svg
                                           xmlns="http://www.w3.org/2000/svg"
                                           width="24"
@@ -417,13 +416,8 @@ const RoomPage = (props) => {
                                           stroke-width="2"
                                           stroke-linecap="round"
                                           stroke-linejoin="round"
-                                          class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
-                                        >
-                                          <path
-                                            stroke="none"
-                                            d="M0 0h24v24H0z"
-                                            fill="none"
-                                          />
+                                          class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                           <path d="M4 7l16 0" />
                                           <path d="M10 11l0 6" />
                                           <path d="M14 11l0 6" />
@@ -431,7 +425,7 @@ const RoomPage = (props) => {
                                           <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                                         </svg>{" "}
                                         Hapus
-                                      </a> */}
+                                      </a>
                                     </div>
                                   </td>
                                 </tr>
@@ -512,7 +506,12 @@ const RoomPage = (props) => {
         handleUpdateRoom={handleUpdateRoom}
         users={users}
       />
-      {/* <ModalDelete labelModal={formState?.name} isShowModal={isShowModalDelete} closeModal={closeModalDelete} handleDelete={handleDelete} /> */}
+      <ModalDelete
+        labelModal={formState?.name}
+        isShowModal={isShowModalDelete}
+        closeModal={closeModalDelete}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };

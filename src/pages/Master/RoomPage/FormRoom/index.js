@@ -6,7 +6,18 @@ import { BASE_URL_STORAGE } from "../../../../helpers/config";
 import { toast } from "react-hot-toast";
 
 const FormRoom = (props) => {
-  const { workUnits, users, isShowModal, isEdit, closeModal, formState, setFormState, handleAdd, handleUpdate } = props;
+  const {
+    workUnits,
+    users,
+    isShowModal,
+    isEdit,
+    closeModal,
+    formState,
+    setFormState,
+    handleAdd,
+    handleUpdate,
+    handleUpdateRoom,
+  } = props;
   // const imageSrc = BASE_URL_STORAGE + imageUrl;
   const [showPassword, setShowPassword] = useState(false);
   const inputRefName = useRef(null);
@@ -238,29 +249,9 @@ const FormRoom = (props) => {
                 </div>
               </div>
               <div class="col-lg-12">
-                <label class="form-label">Foto Profil</label>
+                <label class="form-label">Foto Ruangan</label>
                 <div class="mb-3 w-100 ">
                   <div className="card  d-flex justify-content-center align-content-center w-100">
-                    {/* <span className="py-5 text-center text-muted">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-upload"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-                        <path d="M7 9l5 -5l5 5" />
-                        <path d="M12 4l0 12" />
-                      </svg>
-                      <br /> Drop foto disini
-                    </span> */}
                     <DragDropFile setFormState={setFormState} formState={formState} />
 
                     {formState?.images?.length > 0 ? (
@@ -299,8 +290,7 @@ const FormRoom = (props) => {
                                     })),
                                   }));
                                   toast.success(
-                                    (file?.id ? file?.image_path : file?.file_name) +
-                                      " berhasil di set sebagai thumbnail",
+                                    (file?.id ? file?.image_path : file?.file_name) + "  di set sebagai thumbnail",
                                     {
                                       position: "top-right",
                                       autoClose: 2000,
@@ -370,6 +360,14 @@ const FormRoom = (props) => {
                               <button
                                 className="btn btn-outline-danger btn-sm"
                                 onClick={() => {
+                                  // jika file yang dihapus adalah main image, set main image ke gambar pertama jika ada
+                                  setFormState((prev) => ({
+                                    ...prev,
+                                    images: prev?.images?.map((img, i) => ({
+                                      ...img,
+                                      is_main: i === 0 ? 1 : 0,
+                                    })),
+                                  }));
                                   setFormState((prev) => ({
                                     ...prev,
                                     images: prev?.images?.filter((_, i) => i !== index),
@@ -420,7 +418,7 @@ const FormRoom = (props) => {
               Cancel{" "}
             </a>
             {isEdit ? (
-              <a href="#" class="btn bg-secondary-lt btn-5 ms-auto" data-bs-dismiss="modal" onClick={handleUpdate}>
+              <a href="#" class="btn bg-secondary-lt btn-5 ms-auto" data-bs-dismiss="modal" onClick={handleUpdateRoom}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"

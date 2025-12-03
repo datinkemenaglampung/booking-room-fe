@@ -1,8 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, use } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import { login } from "../../actions/authAction/loginAction";
 import OverlayLoading from "../../components/Loading/OverlayLoading";
 import logo from "../../assets/images/logo_kemenag.png";
+import { toast } from "react-hot-toast";
 
 const LoginPage = (props) => {
   const { login, isLoading } = props;
@@ -11,6 +13,8 @@ const LoginPage = (props) => {
     password: "",
     email: "",
   });
+  const location = useLocation();
+  const errorMessage = localStorage.getItem("verivyErrorMessage");
   const [showPassword, setShowPassword] = useState(false);
   const inputRefUsername = useRef(null);
   const inputRef = useRef(null);
@@ -22,6 +26,14 @@ const LoginPage = (props) => {
 
   useEffect(() => {
     inputRefUsername.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    if (errorMessage) {
+      // Show toast error
+      toast.error(decodeURIComponent(errorMessage));
+      localStorage.removeItem("verivyErrorMessage");
+    }
   }, []);
 
   return (
@@ -52,12 +64,12 @@ const LoginPage = (props) => {
           <h2 class="h2 text-center mb-4">Login ke akun anda</h2>
           <form novalidate onSubmit={handleLogin}>
             <div class="mb-3">
-              <label class="form-label">NIP / email</label>
+              <label class="form-label">NIP</label>
               <input
                 ref={inputRefUsername}
                 type="text"
                 class="form-control"
-                placeholder="NIP / email anda"
+                placeholder="nomor induk pegawai"
                 autocomplete="off"
                 onChange={(e) => {
                   setFormState({
@@ -85,7 +97,7 @@ const LoginPage = (props) => {
                   ref={inputRef}
                   type={showPassword ? "text" : "password"}
                   class="form-control"
-                  placeholder="Password anda"
+                  placeholder="password"
                   autocomplete="off"
                   onChange={(e) => {
                     setFormState({
@@ -162,9 +174,9 @@ const LoginPage = (props) => {
         </div>
       </div>
       <div class="text-center text-secondary mt-3">
-        Belum punya akun?{" "}
-        <a href="./sign-up.html" tabindex="-1">
-          Chat admin
+        Login dengan{" "}
+        <a href="https://sso.kemenag.go.id/auth/signin?appid=7dca7a5d2dbb18d09a917af7525b9d4f" tabindex="-1">
+          SSO KEMENAG
         </a>
       </div>
       <OverlayLoading isShow={isLoading} />

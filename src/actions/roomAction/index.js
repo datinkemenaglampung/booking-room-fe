@@ -87,7 +87,7 @@ export const addRoom = (data) => {
     try {
       const response = await showToast(authorizedAxios.post(`${BASE_URL}/rooms`, data), {
         loading: "Menyimpan data...",
-        success: "Data role berhasil ditambahkan!",
+        success: "Data room berhasil ditambahkan!",
         error: (err) => err?.message || "Gagal menyimpan data!",
       });
       if (response.status === 200 || response.status === 201) {
@@ -112,7 +112,7 @@ export const updateRoom = (id, data) => {
     try {
       const response = await showToast(authorizedAxios.put(`${BASE_URL}/rooms/${id}`, data), {
         loading: "Mengupdate data...",
-        success: "Data role berhasil diupdate!",
+        success: "Data room berhasil diupdate!",
         error: (err) => err?.message || "Gagal mengupdate data!",
       });
       if (response.status === 200 || response.status === 201) {
@@ -135,9 +135,9 @@ export const updatePermissions = (id, data) => {
     dispatch({ type: SET_ROOMS_LOADING, status: true });
 
     try {
-      const response = await showToast(authorizedAxios.put(`${BASE_URL}/rooms/${id}/role-permissions`, data), {
+      const response = await showToast(authorizedAxios.put(`${BASE_URL}/rooms/${id}/room-permissions`, data), {
         loading: "Mengupdate data...",
-        success: "Data role berhasil diupdate!",
+        success: "Data room berhasil diupdate!",
         error: (err) => err?.message || "Gagal mengupdate data!",
       });
       if (response.status === 200 || response.status === 201) {
@@ -162,7 +162,7 @@ export const deleteRoom = (id) => {
     try {
       const response = await showToast(authorizedAxios.delete(`${BASE_URL}/rooms/${id}`), {
         loading: "Menghapus data...",
-        success: "Data role berhasil dihapus!",
+        success: "Data room berhasil dihapus!",
         error: (err) => err?.message || "Gagal menghapus data!",
       });
       if (response.status === 200 || response.status === 201) {

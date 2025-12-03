@@ -14,6 +14,7 @@ const Sidebar = (props) => {
   }, [pathname]);
 
   const permissions = userProfile?.permissions;
+  console.log(permissions);
 
   return (
     <aside class="navbar navbar-vertical navbar-left navbar-expand-lg">
@@ -1443,7 +1444,11 @@ const Sidebar = (props) => {
                 <span class="nav-link-title"> Beranda </span>
               </Link>
             </li>
-            {permissions?.some((item) => item?.slug == "view-reports") && (
+            {permissions?.some((item) => item?.slug == "view-reports") ||
+            permissions?.some((item) => item?.slug == "view-users") ||
+            permissions?.some((item) => item?.slug == "view-roles") ||
+            permissions?.some((item) => item?.slug == "view-permissions") ||
+            permissions?.some((item) => item?.slug == "view-rooms") ? (
               <li className={`nav-item dropdown ${pathname?.split("/")[1] === "master" ? "active" : ""}`}>
                 <a
                   class="nav-link dropdown-toggle"
@@ -1478,58 +1483,11 @@ const Sidebar = (props) => {
                 <div className={`dropdown-menu  ${pathname?.split("/")[1] === "master" ? "show" : ""}`}>
                   <div class="dropdown-menu-columns">
                     <div class="dropdown-menu-column">
-                      <Link
-                        to="/master/accounts"
-                        className={`dropdown-item   ${pathname?.split("/")[2] === "accounts" ? "active" : ""}`}
-                        href="./alerts.html">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          class="icon icon-tabler icons-tabler-outline icon-tabler-user-circle">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                          <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                          <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
-                        </svg>
-                        Akun / User{" "}
-                      </Link>
-                      <Link
-                        to="/master/rooms"
-                        className={`dropdown-item   ${pathname?.split("/")[2] === "rooms" ? "active" : ""}`}
-                        href="./alerts.html">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="1.25"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          class="lucide lucide-warehouse-icon lucide-warehouse">
-                          <path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11" />
-                          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z" />
-                          <path d="M6 13h12" />
-                          <path d="M6 17h12" />
-                        </svg>
-                        Ruangan
-                      </Link>
-                      <div class="dropend">
-                        <a
-                          class="dropdown-item dropdown-toggle"
-                          href="#sidebar-authentication"
-                          data-bs-toggle="dropdown"
-                          data-bs-auto-close="false"
-                          role="button"
-                          aria-expanded="false">
+                      {permissions?.some((item) => item?.slug == "view-users") ? (
+                        <Link
+                          to="/master/accounts"
+                          className={`dropdown-item   ${pathname?.split("/")[2] === "accounts" ? "active" : ""}`}
+                          href="./alerts.html">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -1540,41 +1498,101 @@ const Sidebar = (props) => {
                             stroke-width="2"
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            class="icon icon-tabler icons-tabler-outline icon-tabler-user-cog">
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-user-circle">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                            <path d="M6 21v-2a4 4 0 0 1 4 -4h2.5" />
-                            <path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                            <path d="M19.001 15.5v1.5" />
-                            <path d="M19.001 21v1.5" />
-                            <path d="M22.032 17.25l-1.299 .75" />
-                            <path d="M17.27 20l-1.3 .75" />
-                            <path d="M15.97 17.25l1.3 .75" />
-                            <path d="M20.733 20l1.3 .75" />
+                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                            <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                            <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
                           </svg>
-                          Role Permission
-                        </a>
-                        <div
-                          className={`dropdown-menu  ${pathname?.split("/")[2] === "role-permission" ? "show" : ""}`}>
-                          <Link
-                            to="/master/role-permission/roles"
-                            className={`dropdown-item  ${pathname?.split("/")[3] === "roles" ? "active" : ""}`}>
-                            {" "}
-                            Role
-                          </Link>
-                          <Link
-                            to="/master/role-permission/permissions"
-                            className={`dropdown-item  ${pathname?.split("/")[3] === "permissions" ? "active" : ""}`}>
-                            {" "}
-                            Permission / Hak Akses
-                          </Link>
+                          Akun / User{" "}
+                        </Link>
+                      ) : (
+                        ""
+                      )}
+                      {permissions?.some((item) => item?.slug == "view-rooms") ? (
+                        <Link
+                          to="/master/rooms"
+                          className={`dropdown-item   ${pathname?.split("/")[2] === "rooms" ? "active" : ""}`}
+                          href="./alerts.html">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.25"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="lucide lucide-warehouse-icon lucide-warehouse">
+                            <path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11" />
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z" />
+                            <path d="M6 13h12" />
+                            <path d="M6 17h12" />
+                          </svg>
+                          Ruangan
+                        </Link>
+                      ) : (
+                        ""
+                      )}
+                      {permissions?.some((item) => item?.slug == "view-roles") ||
+                      permissions?.some((item) => item?.slug == "view-permissions") ? (
+                        <div class="dropend">
+                          <a
+                            class="dropdown-item dropdown-toggle"
+                            href="#sidebar-authentication"
+                            data-bs-toggle="dropdown"
+                            data-bs-auto-close="false"
+                            role="button"
+                            aria-expanded="false">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              class="icon icon-tabler icons-tabler-outline icon-tabler-user-cog">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                              <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                              <path d="M6 21v-2a4 4 0 0 1 4 -4h2.5" />
+                              <path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                              <path d="M19.001 15.5v1.5" />
+                              <path d="M19.001 21v1.5" />
+                              <path d="M22.032 17.25l-1.299 .75" />
+                              <path d="M17.27 20l-1.3 .75" />
+                              <path d="M15.97 17.25l1.3 .75" />
+                              <path d="M20.733 20l1.3 .75" />
+                            </svg>
+                            Role Permission
+                          </a>
+                          <div
+                            className={`dropdown-menu  ${pathname?.split("/")[2] === "role-permission" ? "show" : ""}`}>
+                            <Link
+                              to="/master/role-permission/roles"
+                              className={`dropdown-item  ${pathname?.split("/")[3] === "roles" ? "active" : ""}`}>
+                              {" "}
+                              Role
+                            </Link>
+                            <Link
+                              to="/master/role-permission/permissions"
+                              className={`dropdown-item  ${pathname?.split("/")[3] === "permissions" ? "active" : ""}`}>
+                              {" "}
+                              Permission / Hak Akses
+                            </Link>
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
                 </div>
               </li>
-            )}
+            ) : null}
             <li className={`nav-item ${pathname?.split("/")[1] === "bookings" ? "active" : ""}`}>
               <Link to="/bookings" className="nav-link">
                 <span class="nav-link-icon d-md-none d-lg-inline-block">

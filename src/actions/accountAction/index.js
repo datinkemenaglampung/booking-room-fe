@@ -6,7 +6,7 @@ export const SET_ACCOUNT = "SET_ACCOUNT";
 export const SET_ACCOUNTS_LOADING = "SET_ACCOUNTS_LOADING";
 export const SET_ACCOUNTS_ERROR = "SET_ACCOUNTS_ERROR";
 
-export const fetchAccounts = (limit = 100, page = 1) => {
+export const fetchAccounts = (limit = 250, page = 1) => {
   return async (dispatch) => {
     dispatch({ type: SET_ACCOUNTS_LOADING, status: true });
 
