@@ -18,6 +18,7 @@ import {
 import { fetchRooms } from "../../actions/roomAction";
 import UserAvatar from "../../components/UserAvatar";
 import FormBooking from "./FormBooking";
+import ModalBooking from "./ModalBooking";
 
 import Swal from "sweetalert2";
 import ModalDelete from "../../components/Modals/ModalDelete";
@@ -94,7 +95,16 @@ const EventCard = ({ event }) => {
     </div>
   );
 };
-const EventAgenda = ({ event, cancelBooking, approveBooking, rejectBooking, setFormState, setIsEdit, permissions }) => {
+const EventAgenda = ({
+  event,
+  cancelBooking,
+  approveBooking,
+  rejectBooking,
+  setFormState,
+  setIsEdit,
+  permissions,
+  userId,
+}) => {
   const bookingStatusBgColor = {
     approved: "bg-success",
     pending: "bg-info",
@@ -143,7 +153,7 @@ const EventAgenda = ({ event, cancelBooking, approveBooking, rejectBooking, setF
     });
 
     if (result.isConfirmed) {
-      approveBooking(data.id);
+      await approveBooking(data.id);
       Swal.fire("Sukses", "Permintaan booking berhasil disetujui.", "success");
     }
   };
@@ -152,11 +162,21 @@ const EventAgenda = ({ event, cancelBooking, approveBooking, rejectBooking, setF
     <div className="w-100 d-flex flex-row justifu-content-between align-items-center my-1 py-2">
       <UserAvatar size="xl" className="me-2" imageUrl={`${event.room_image}`} />
       <div className="d-flex flex-column justifu-content-between">
-        <span
+        <a
+          data-bs-toggle="modal"
+          data-bs-target="#modal-booking-preview"
           className="fw-bold"
-          style={{ fontSize: "1.3rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          style={{
+            fontSize: "1.3rem",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            color: "#333333",
+            cursor: "pointer",
+            textDecoration: "none",
+          }}>
           {event.title}
-        </span>
+        </a>
         <div className="w-100 d-flex justify-content-start gap-1 align-items-center my-1">
           <span
             className={`badge rounded-pill px-2 color-white `}
@@ -246,7 +266,7 @@ const EventAgenda = ({ event, cancelBooking, approveBooking, rejectBooking, setF
       </div>
       {event.status === "pending" ? (
         <span style={{ marginLeft: "auto" }}>
-          {permissions?.some((item) => item?.slug == "view-reports") && (
+          {permissions?.some((item) => item?.slug == "edit-status-bookings") && (
             <>
               <a
                 class="btn btn-1 bg-danger-lt me-3 p-1"
@@ -271,74 +291,82 @@ const EventAgenda = ({ event, cancelBooking, approveBooking, rejectBooking, setF
               </a>
             </>
           )}
-          <a
-            data-bs-toggle="modal"
-            data-bs-target="#modal-booking"
-            class="btn btn-1 bg-warning-lt me-3 p-1"
-            style={{
-              fontSize: "0.6rem",
-            }}
-            onClick={async () => {
-              setIsEdit(true);
-              setFormState({
-                ...event,
-                booking_date: event.start.toISOString().split("T")[0],
-                attachment_file_url: event?.attachment_file,
-              });
-            }}>
-            {" "}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-square-pen-icon lucide-square-pen">
-              <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-              <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />
-            </svg>
-          </a>
-          <a
-            href="#"
-            class="btn btn-1 bg-danger-lt m-0 p-1"
-            data-bs-toggle="modal"
-            data-bs-target="#modal-delete"
-            onClick={() => {
-              setFormState({
-                id: event?.id,
-                title: event?.title,
-                name: event?.purpose,
-                start: event?.start,
-                end: event?.end,
-                room_id: event?.room_id,
-                room_name: event?.room_name,
-                status: event?.status,
-              });
-            }}>
-            {" "}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M4 7l16 0" />
-              <path d="M10 11l0 6" />
-              <path d="M14 11l0 6" />
-              <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-              <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-            </svg>
-          </a>
+          {permissions?.some((item) => item?.slug == "edit-bookings") || event?.created_by == userId ? (
+            <a
+              data-bs-toggle="modal"
+              data-bs-target="#modal-booking"
+              class="btn btn-1 bg-warning-lt me-3 p-1"
+              style={{
+                fontSize: "0.6rem",
+              }}
+              onClick={async () => {
+                setIsEdit(true);
+                setFormState({
+                  ...event,
+                  booking_date: event.start.toISOString().split("T")[0],
+                  attachment_file_url: event?.attachment_file,
+                });
+              }}>
+              {" "}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-square-pen-icon lucide-square-pen">
+                <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />
+              </svg>
+            </a>
+          ) : (
+            ""
+          )}
+          {permissions?.some((item) => item?.slug == "delete-bookings") || event?.created_by == userId ? (
+            <a
+              href="#"
+              class="btn btn-1 bg-danger-lt m-0 p-1"
+              data-bs-toggle="modal"
+              data-bs-target="#modal-delete"
+              onClick={() => {
+                setFormState({
+                  id: event?.id,
+                  title: event?.title,
+                  name: event?.purpose,
+                  start: event?.start,
+                  end: event?.end,
+                  room_id: event?.room_id,
+                  room_name: event?.room_name,
+                  status: event?.status,
+                });
+              }}>
+              {" "}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M4 7l16 0" />
+                <path d="M10 11l0 6" />
+                <path d="M14 11l0 6" />
+                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+              </svg>
+            </a>
+          ) : (
+            ""
+          )}
         </span>
       ) : (
         ""
@@ -436,6 +464,10 @@ const BookingPage = (props) => {
       room_image: item.room_image,
       user_name: item.user_name,
       rejected_reason: item.rejected_reason,
+      created_by: item.created_by,
+      created_at: item.created_at,
+      updated_by: item.updated_by,
+      updated_at: item.updated_at,
       rejected_by: item.rejected_by,
       rejected_at: item.rejected_at,
       rejected_by_name: item.rejected_by_name,
@@ -507,7 +539,6 @@ const BookingPage = (props) => {
       return null;
     }
   }, []);
-  const permissions = userProfile?.permissions;
 
   return (
     <div className="page-wrapper">
@@ -632,7 +663,8 @@ const BookingPage = (props) => {
                                 cancelBooking={cancelBooking}
                                 setFormState={setFormState}
                                 setIsEdit={setIsEdit}
-                                permissions={permissions}
+                                permissions={userProfile?.permissions}
+                                userId={userProfile?.id}
                               />
                             ),
                           },
@@ -693,6 +725,7 @@ const BookingPage = (props) => {
         closeModal={closeModalDelete}
         handleDelete={handleDelete}
       />
+      <ModalBooking isShowModal={isShowModal} closeModal={closeModal} formState={formState} rooms={rooms} />
     </div>
   );
 };
