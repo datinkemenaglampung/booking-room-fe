@@ -38,7 +38,7 @@ export const login = (data) => {
         localStorage.setItem("auth", JSON.stringify(response?.data?.data));
         await dispatch(fetchUserProfile());
 
-        window.location.href = "/home";
+        window.location.href = "home";
       }
     } catch (error) {
       localStorage.removeItem("auth");
@@ -56,7 +56,7 @@ export const logout = () => {
   return (dispatch) => {
     localStorage.removeItem("auth");
     localStorage.removeItem("userProfile");
-    window.location.href = "/login";
+    window.location.href = "login";
   };
 };
 
@@ -75,7 +75,7 @@ export const verivyToken = (token) => {
         await dispatch(fetchUserProfile());
         // kasih jeda delay 1 detik sebelum redirect
         setTimeout(() => {
-          window.location.href = "/home";
+          window.location.href = "home";
         }, 1000);
       }
     } catch (error) {
@@ -87,7 +87,7 @@ export const verivyToken = (token) => {
         error: error?.message || "Terjadi kesalahan.",
       });
       // redirect to login page and show toast error
-      window.location.href = "/login";
+      window.location.href = "login";
     }
     //  finally {
     //   dispatch({ type: SET_LOGIN_LOADING, status: false });

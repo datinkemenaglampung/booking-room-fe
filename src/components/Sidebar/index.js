@@ -14,7 +14,6 @@ const Sidebar = (props) => {
   }, [pathname]);
 
   const permissions = userProfile?.permissions;
-  console.log(permissions);
 
   return (
     <aside class="navbar navbar-vertical navbar-left navbar-expand-lg">

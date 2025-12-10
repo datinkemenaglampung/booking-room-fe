@@ -25,7 +25,7 @@ import startOfWeek from "date-fns/startOfWeek";
 import getDay from "date-fns/getDay";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import { set } from "date-fns";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 const locales = {
   "id-ID": idLocale,
 };
@@ -211,7 +211,7 @@ const LandingPage = (props) => {
     <div className="w-100 h-100" id="home">
       <header className="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div className="container">
-          <a className="navbar-brand fw-bold" href=".">
+          <Link className="navbar-brand fw-bold" to="/">
             <img
               src={logo}
               alt="Logo"
@@ -222,7 +222,7 @@ const LandingPage = (props) => {
                 mixBlendMode: "normal",
               }}
             />
-          </a>
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -247,9 +247,9 @@ const LandingPage = (props) => {
                 </a>
               </li>
               <li className="nav-item">
-                <a className="btn btn-primary ms-3" href="/login">
+                <Link className="btn btn-primary ms-3" to="/login">
                   Login
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -699,7 +699,7 @@ const LandingPage = (props) => {
                   <li className="list-inline-item">
                     Copyright &copy; 2025{" "}
                     <a href="." className="text-light">
-                      Faiz Alauddin Ma'ruf
+                      Data Informasi dan Transformasi Digital - Kementerian Agama Provinsi Lampung
                     </a>
                     . All rights reserved.
                   </li>

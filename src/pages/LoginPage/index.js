@@ -5,6 +5,8 @@ import { login } from "../../actions/authAction/loginAction";
 import OverlayLoading from "../../components/Loading/OverlayLoading";
 import logo from "../../assets/images/logo_kemenag.png";
 import { toast } from "react-hot-toast";
+import { SSO_URL } from "../../helpers/config";
+import { Link } from "react-router-dom";
 
 const LoginPage = (props) => {
   const { login, isLoading } = props;
@@ -39,25 +41,24 @@ const LoginPage = (props) => {
   return (
     <div class="container container-tight py-4">
       <div class="text-center mb-1">
-        <img
-          src={logo}
-          alt="Logo"
-          style={{
-            width: "10em",
-            backgroundColor: "#fff",
-            filter: "none",
-            mixBlendMode: "normal",
-            borderRadius: "0.5em",
-            boxShadow: "0 0 0.5em rgba(0, 0, 0, 0.1)",
-            padding: "1em",
-            marginTop: "1em",
-            marginBottom: "1em",
-            cursor: "pointer",
-          }}
-          onClick={() => {
-            window.location.href = "/";
-          }}
-        />
+        <Link to="/">
+          <img
+            src={logo}
+            alt="Logo"
+            style={{
+              width: "10em",
+              backgroundColor: "#fff",
+              filter: "none",
+              mixBlendMode: "normal",
+              borderRadius: "0.5em",
+              boxShadow: "0 0 0.5em rgba(0, 0, 0, 0.1)",
+              padding: "1em",
+              marginTop: "1em",
+              marginBottom: "1em",
+              cursor: "pointer",
+            }}
+          />
+        </Link>
       </div>
       <div class="card card-md">
         <div class="card-body">
@@ -175,7 +176,7 @@ const LoginPage = (props) => {
       </div>
       <div class="text-center text-secondary mt-3">
         Login dengan{" "}
-        <a href="https://sso.kemenag.go.id/auth/signin?appid=7dca7a5d2dbb18d09a917af7525b9d4f" tabindex="-1">
+        <a href={SSO_URL} tabindex="-1">
           SSO KEMENAG
         </a>
       </div>
